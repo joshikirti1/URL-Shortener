@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube URL Shortener</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Universal URL Shortener</h1>
+
+        <p>Paste your URL below:</p>
+
+        <input type="text" id="originalUrl" placeholder="Enter URL">
+
+        <button onclick="shortenUrl()">Shorten URL</button>
+
+        <p id="result"></p>
+        <div id="qrcode"></div>
+
+    </div>
+
+    <script>
+        function shortenUrl() {
+
+            const originalUrl = document.getElementById("originalUrl").value.trim();
+
+            if (!originalUrl) {
+                document.getElementById("result").innerText = "Please enter a URL!";
+                return;
+            }
+
+            try {
+                const parsedUrl = new URL(originalUrl);
+
+                if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+                    document.getElementById("result").innerText = "Only HTTP and HTTPS URLs are allowed!";
+                    return;
+                }
+            } catch (error) {
+                document.getElementById("result").innerText = "Please enter a valid URL!";
+                return;
+            }
+            document.getElementById("result").innerText = "Generating your short URL...";
+            fetch("/api/shorten", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    originalUrl: originalUrl
+                })
+            })
+
+                .then(response => response.text())
+
+                .then(data => {
+
+                    const result = document.getElementById("result");
+                    const shortUrl = data.replace("Short URL: ", "").trim();
+
+                    result.innerHTML = "";
+
+                    if (data.startsWith("Short URL: ")) {
+
+                        result.append("Short URL: ");
+
+                        const link = document.createElement("a");
+                        link.href = shortUrl;
+                        link.textContent = shortUrl;
+                        link.target = "_blank";
+
+                        result.append(link);
+                        const qrContainer = document.getElementById("qrcode");
+                        qrContainer.innerHTML = "";
+
+                        new QRCode(qrContainer, {
+                            text: shortUrl,
+                            width: 150,
+                            height: 150
+                        });
+
+                        const copyButton = document.createElement("button");
+                        copyButton.textContent = "Copy";
+                        copyButton.style.marginLeft = "10px";
+
+                        copyButton.onclick = function () {
+                            navigator.clipboard.writeText(shortUrl)
+                                .then(() => {
+                                    copyButton.textContent = "Copied!";
+                                })
+                                .catch(() => {
+                                    copyButton.textContent = "Copy failed";
+                                });
+                        };
+
+                        result.append(copyButton);
+
+                    } else {
+
+                        result.textContent = data;
+
+                    }
+
+                })
+
+                .catch(error => {
+
+                    document.getElementById("result").innerText =
+                        "Something went wrong!";
+
+                    console.error(error);
+
+                });
+        }
+    </script>
+
+</body>
+
+</html>

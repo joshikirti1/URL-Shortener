@@ -1,0 +1,149 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FAF3E8;
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main Card */
+.container {
+    background-color: #FFFFFF;
+    width: 420px;
+    padding: 40px;
+    border-radius: 18px;
+    text-align: center;
+
+    box-shadow: 0 8px 25px rgba(36, 66, 54, 0.12);
+}
+
+/* Heading */
+h1 {
+    color: #244236;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+/* Description */
+p {
+    color: #666666;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* URL Input */
+input {
+    width: 90%;
+    padding: 14px;
+    margin: 15px 0;
+
+    border: 1px solid #D8D8D8;
+    border-radius: 9px;
+
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #D97757;
+    box-shadow: 0 0 5px rgba(217, 119, 87, 0.25);
+}
+
+/* Shorten Button */
+button {
+    background-color: #D97757;
+    color: white;
+
+    border: none;
+    padding: 13px 28px;
+    border-radius: 9px;
+
+    font-size: 16px;
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #B85F43;
+}
+
+/* Generated URL */
+#result {
+    margin-top: 25px;
+    overflow-wrap: anywhere;
+    color: #244236;
+    font-size: 15px;
+}
+
+/* Generated Link */
+a {
+    color: #D97757;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+
+/* Tablets and smaller screens */
+@media (max-width: 768px) {
+    .container {
+        width: 80%;
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .container {
+        width: 100%;
+        padding: 25px 15px;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    #result {
+        font-size: 14px;
+    }
+
+    #qrcode {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+}
